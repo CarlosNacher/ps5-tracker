@@ -2,7 +2,7 @@
   "title": "PS5 Watch",
   "currency": "EUR",
   "gta6_date": "2026-11-19",
-  "repo": "TU-USUARIO/ps5-tracker",
+  "repo": "CarlosNacher/ps5-tracker",
   "alerts": {
     "drop_pct": 10,
     "rise_pct": 10,
