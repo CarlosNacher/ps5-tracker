@@ -24,6 +24,15 @@ from zoneinfo import ZoneInfo
 import requests
 from bs4 import BeautifulSoup
 
+try:
+    # Imita la huella TLS de Chrome. Sin esto, Cloudflare y Akamai
+    # devuelven 403 antes incluso de mirar las cabeceras.
+    from curl_cffi import requests as impersonator
+    IMPERSONA = "chrome124"
+except ImportError:
+    impersonator = None
+    IMPERSONA = None
+
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "config.json"
 PRICES = ROOT / "data" / "prices.json"
@@ -32,13 +41,25 @@ MADRID = ZoneInfo("Europe/Madrid")
 
 UA = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
 HEADERS = {
     "User-Agent": UA,
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "es-ES,es;q=0.9",
-    "Cache-Control": "no-cache",
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,image/apng,*/*;q=0.8"
+    ),
+    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Sec-Ch-Ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": '"macOS"',
+    "Connection": "keep-alive",
 }
 
 PRICE_RE = re.compile(r"(\d{1,3}(?:[.\s]\d{3})*|\d+)(?:,(\d{2}))?\s*(?:€|EUR)")
@@ -170,35 +191,66 @@ def from_regex(html):
     return min(candidates) if candidates else None
 
 
+def descargar(url, timeout=30):
+    """Baja la página imitando a Chrome. Devuelve (html, status, error)."""
+    dominio = re.sub(r"^https?://([^/]+).*", r"\1", url)
+    cabeceras = dict(HEADERS)
+    # Llegar "desde Google" levanta menos sospechas que entrar a pelo.
+    cabeceras["Referer"] = "https://www.google.com/"
+    cabeceras["Sec-Fetch-Site"] = "cross-site"
+
+    if impersonator is not None:
+        try:
+            with impersonator.Session(impersonate=IMPERSONA) as s:
+                # Primero la portada, para recoger las cookies que planta el WAF.
+                try:
+                    s.get(f"https://{dominio}/", headers=cabeceras, timeout=timeout)
+                    time.sleep(1 + random.random())
+                except Exception:
+                    pass
+                r = s.get(url, headers=cabeceras, timeout=timeout)
+                return r.text, r.status_code, None
+        except Exception as e:
+            return None, None, f"{type(e).__name__} (curl_cffi)"
+
+    try:
+        r = requests.get(url, headers=cabeceras, timeout=timeout)
+        return r.text, r.status_code, None
+    except requests.RequestException as e:
+        return None, None, type(e).__name__
+
+
 def scrape(url, provider):
     """Devuelve (precio, método, error)."""
     last_err = None
     for intento in range(3):
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=25)
-            if r.status_code in (403, 429, 503):
-                last_err = f"HTTP {r.status_code} (bloqueo)"
-                time.sleep(4 + intento * 6 + random.random() * 3)
-                continue
-            r.raise_for_status()
-            soup = BeautifulSoup(r.text, "lxml")
-            for estrategia in provider.get("strategies", ["jsonld", "meta", "regex"]):
-                if estrategia == "jsonld":
-                    val = from_jsonld(soup)
-                elif estrategia == "meta":
-                    val = from_meta(soup)
-                elif estrategia == "css":
-                    val = from_css(soup, provider.get("css"))
-                elif estrategia == "regex":
-                    val = from_regex(r.text)
-                else:
-                    val = None
-                if sane(val):
-                    return val, estrategia, None
-            return None, None, "sin precio en la página"
-        except requests.RequestException as e:
-            last_err = type(e).__name__
-            time.sleep(3 + intento * 4)
+        html, status, error = descargar(url)
+        if error:
+            last_err = error
+            time.sleep(3 + intento * 5)
+            continue
+        if status in (403, 429, 503):
+            last_err = f"HTTP {status} (bloqueo)"
+            time.sleep(5 + intento * 8 + random.random() * 4)
+            continue
+        if status >= 400:
+            return None, None, f"HTTP {status}"
+
+        soup = BeautifulSoup(html, "lxml")
+        for estrategia in provider.get("strategies", ["jsonld", "meta", "regex"]):
+            if estrategia == "jsonld":
+                val = from_jsonld(soup)
+            elif estrategia == "meta":
+                val = from_meta(soup)
+            elif estrategia == "css":
+                val = from_css(soup, provider.get("css"))
+            elif estrategia == "regex":
+                val = from_regex(html)
+            else:
+                val = None
+            if sane(val):
+                return val, estrategia, None
+        return None, None, "sin precio en la página"
     return None, None, last_err or "fallo de red"
 
 
