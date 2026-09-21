@@ -50,31 +50,27 @@
     {
       "id": "ps5-digital",
       "name": "PS5 Slim Digital",
-      "note": "825 GB, sin lector",
+      "note": "825 GB, Chasis E, 1 mando",
       "pvp": 599.99,
       "target": 499,
       "urls": {
-        "amazon": "https://www.amazon.es/dp/B0CL61F39H",
-        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-digital-slim-1428279.html",
-        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-slim-digital-1tb",
-        "fnac": "https://www.fnac.es/Consola-Sony-PS5-Slim-Digital/a9012345",
-        "game": "https://www.game.es/consola/consola-playstation-5-digital-slim",
-        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A48123456-consola-ps5-digital-slim/"
+        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-slim-digital-edition-825-gb-ssd-4k-1-mando-chasis-e-blanco-1605666.html",
+        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-slim-digital-chasis-e",
+        "game": "https://www.game.es/playstation-5-edicion-digital-modelo-slim-chassis-e-playstation-5-250406",
+        "fnac": "https://www.fnac.es/Consola-PS5-Slim-Digital-1TB-Chassis-D-Videoconsola-Consola/a10621713"
       }
     },
     {
       "id": "ps5-lector",
       "name": "PS5 Slim con lector",
-      "note": "1 TB, Blu-ray 4K",
+      "note": "1 TB, Chasis E, 1 mando",
       "pvp": 649.99,
       "target": 549,
       "urls": {
-        "amazon": "https://www.amazon.es/dp/B0CL5KNB9M",
-        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-slim-1428278.html",
-        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-slim-1tb",
-        "fnac": "https://www.fnac.es/Consola-Sony-PS5-Slim/a9012346",
-        "game": "https://www.game.es/consola/consola-playstation-5-slim",
-        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A48123457-consola-ps5-slim/"
+        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-slim-standard-1-tb-ssd-4k-1-mando-chasis-e-blanco-1605665.html",
+        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-slim-chasis-e",
+        "game": "https://www.game.es/playstation-5-modelo-slim-chassis-e-playstation-5-250405",
+        "fnac": "https://www.fnac.es/Consola-PS5-Slim-1TB-Chassis-D-Videoconsola-Consola/a10621712"
       }
     },
     {
@@ -84,27 +80,20 @@
       "pvp": 899.99,
       "target": 749,
       "urls": {
-        "amazon": "https://www.amazon.es/dp/B0DGY63Z2N",
-        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-pro-1673558.html",
-        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-pro-2tb",
-        "fnac": "https://www.fnac.es/Consola-Sony-PS5-Pro/a9012347",
-        "game": "https://www.game.es/consola/consola-playstation-5-pro",
-        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A48123458-consola-ps5-pro/"
+        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-pro-con-nuevo-dualsense",
+        "game": "https://www.game.es/playstation-5-modelo-pro-playstation-5-236300",
+        "fnac": "https://www.fnac.es/Consola-PS5-Pro-2TB-Videoconsola-Consola/a11330242"
       }
     },
     {
       "id": "dualsense",
       "name": "Mando DualSense",
-      "note": "Oficial Sony, blanco",
+      "note": "Oficial Sony",
       "pvp": 79.99,
       "target": 55,
       "urls": {
-        "amazon": "https://www.amazon.es/dp/B08H99BPJN",
-        "mediamarkt": "https://www.mediamarkt.es/es/product/_mando-sony-dualsense-1382258.html",
-        "pccomponentes": "https://www.pccomponentes.com/sony-dualsense-mando-inalambrico-ps5-blanco",
-        "fnac": "https://www.fnac.es/Mando-inalambrico-DualSense-Sony-Negro-PS5/a8388323",
-        "game": "https://www.game.es/accesorios/mando-dualsense-ps5",
-        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A37123456-mando-dualsense-ps5/"
+        "pccomponentes": "https://www.pccomponentes.com/sony-dualsense-white-mando-inalambrico-para-ps5",
+        "fnac": "https://www.fnac.es/Mando-inalambrico-DualSense-Sony-Negro-PS5-Accesorio-Videoconsola-Mando-consola/a8388323"
       }
     }
   ]
