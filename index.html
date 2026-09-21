@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PS5 Watch</title>
+<meta name="theme-color" content="#0D1424">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PS5 Watch">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+  :root{
+    --ink:#0D1424; --surface:#151E33; --raised:#1B2640; --hair:#253352;
+    --text:#E9EDF7; --muted:#8794B4; --dim:#5D6A88;
+    --down:#5FD3B2; --up:#F0797E; --target:#EFC069;
+    --p-amazon:#8FB8FF; --p-mediamarkt:#F0797E; --p-pccomponentes:#5FD3B2;
+    --p-fnac:#EFC069; --p-game:#C79BF0; --p-elcorteingles:#6FD08C;
+    --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--ink);color:var(--text);font-family:var(--ui)}
+  body{padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 24px) env(safe-area-inset-left);
+       font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(13,20,36,.92);
+    backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--hair);
+    padding:calc(env(safe-area-inset-top) + 12px) 18px 12px;margin:calc(-1 * env(safe-area-inset-top)) 0 0}
+  .brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  h1{font-size:19px;font-weight:640;margin:0;letter-spacing:-.01em}
+  .stamp{font-size:12px;color:var(--dim)}
+  .countdown{margin-top:6px;font-size:13px;color:var(--muted)}
+  .countdown b{color:var(--target);font-weight:600}
+
+  main{max-width:640px;margin:0 auto}
+  .empty{margin:56px 20px;text-align:left;color:var(--muted);font-size:15px}
+  .empty h2{color:var(--text);font-size:17px;margin:0 0 8px}
+  .empty code{background:var(--surface);padding:2px 6px;border-radius:5px;color:var(--text);font-size:13px}
+  .empty button{margin-top:18px}
+
+  .row{border-bottom:1px solid var(--hair);padding:16px 18px;cursor:pointer;display:block;width:100%;
+       background:none;border-left:0;border-right:0;border-top:0;text-align:left;color:inherit;font:inherit}
+  .row:focus-visible{outline:2px solid var(--p-amazon);outline-offset:-2px}
+  .row[aria-expanded=true]{background:var(--surface)}
+  .top{display:flex;align-items:flex-start;gap:14px}
+  .who{flex:1;min-width:0}
+  .name{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .note{font-size:12.5px;color:var(--dim);margin-top:1px}
+  .shop{font-size:12.5px;color:var(--muted);margin-top:5px}
+  .price-side{text-align:right;flex-shrink:0}
+  .price{font-size:26px;font-weight:660;display:block}
+  .pill{display:inline-block;margin-top:4px;font-size:12px;font-weight:600;padding:2px 7px;border-radius:20px}
+  .pill.d{color:var(--down);background:rgba(95,211,178,.13)}
+  .pill.u{color:var(--up);background:rgba(240,121,126,.13)}
+  .pill.f{color:var(--muted);background:rgba(135,148,180,.12)}
+  .spark{margin-top:12px;display:block;width:100%;height:34px;overflow:visible}
+
+  .detail{padding:2px 18px 22px;background:var(--surface);border-bottom:1px solid var(--hair)}
+  .ranges{display:flex;gap:6px;padding:14px 0 10px}
+  .ranges button{flex:1;background:var(--raised);color:var(--muted);border:1px solid transparent;
+    border-radius:9px;padding:7px 0;font:inherit;font-size:13px;font-weight:560}
+  .ranges button[aria-pressed=true]{color:var(--ink);background:var(--text);border-color:var(--text)}
+  .chart{width:100%;height:190px;display:block;touch-action:pan-y}
+  .readout{display:flex;justify-content:space-between;align-items:baseline;
+    font-size:12.5px;color:var(--muted);min-height:20px;margin:2px 0 10px}
+  .legend{display:flex;flex-direction:column;gap:1px;margin-top:8px}
+  .prov{display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid var(--hair);font-size:14px}
+  .dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+  .prov a{color:var(--text);text-decoration:none;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .prov a:after{content:" ↗";color:var(--dim);font-size:12px}
+  .prov .v{font-weight:600}
+  .prov .lo{color:var(--dim);font-size:12px;width:74px;text-align:right}
+  .meta{margin-top:14px;font-size:12.5px;color:var(--dim);display:flex;flex-wrap:wrap;gap:4px 14px}
+  .meta b{color:var(--muted);font-weight:500}
+  .broken{color:var(--up)}
+
+  footer{padding:22px 18px 8px;color:var(--dim);font-size:12.5px;max-width:640px;margin:0 auto}
+  footer a{color:var(--muted)}
+  button.link{background:var(--raised);color:var(--text);border:1px solid var(--hair);
+    border-radius:10px;padding:9px 14px;font:inherit;font-size:14px}
+  @media (prefers-reduced-motion:no-preference){
+    .detail{animation:open .22s cubic-bezier(.2,.7,.3,1)}
+    @keyframes open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>PS5 Watch</h1>
+    <span class="stamp num" id="stamp"></span>
+  </div>
+  <div class="countdown" id="countdown"></div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <p id="foot"></p>
+</footer>
+
+<script>
+const FALLBACK_CONFIG = {
+  title:"PS5 Watch", gta6_date:"2026-11-19", repo:"TU-USUARIO/ps5-tracker",
+  providers:{amazon:{name:"Amazon.es"},mediamarkt:{name:"MediaMarkt"},pccomponentes:{name:"PcComponentes"},
+             fnac:{name:"Fnac"},game:{name:"GAME"},elcorteingles:{name:"El Corte Inglés"}},
+  products:[
+    {id:"ps5-digital",name:"PS5 Slim Digital",note:"825 GB, sin lector",pvp:599.99,target:499,urls:{}},
+    {id:"ps5-lector",name:"PS5 Slim con lector",note:"1 TB, Blu-ray 4K",pvp:649.99,target:549,urls:{}},
+    {id:"ps5-pro",name:"PS5 Pro",note:"2 TB, lector aparte",pvp:899.99,target:749,urls:{}},
+    {id:"dualsense",name:"Mando DualSense",note:"Oficial Sony",pvp:79.99,target:55,urls:{}}
+  ]
+};
+
+const state = {cfg:null, data:null, open:localStorage.getItem("open")||null,
+               range:+(localStorage.getItem("range")||30), demo:false};
+
+const eur = n => n.toLocaleString("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:2});
+const short = n => n.toLocaleString("es-ES",{maximumFractionDigits:0}) + " €";
+const provColor = id => `var(--p-${id}, #8794B4)`;
+
+async function grab(path, fallback){
+  try{
+    const r = await fetch(path + "?v=" + Date.now(), {cache:"no-store"});
+    if(!r.ok) throw 0;
+    return await r.json();
+  }catch(e){ return fallback; }
+}
+
+/* ---------- series: un punto por día, el más bajo visto ese día ---------- */
+function daily(entries, days){
+  const cut = days ? new Date(Date.now() - days*864e5).toISOString().slice(0,10) : null;
+  const byDay = new Map();
+  for(const [stamp, price] of entries||[]){
+    const d = stamp.slice(0,10);
+    if(cut && d < cut) continue;
+    byDay.set(d, Math.min(byDay.get(d) ?? price, price));
+  }
+  return [...byDay.entries()].sort((a,b)=>a[0]<b[0]?-1:1);
+}
+
+function seriesFor(prod, days){
+  const raw = (state.data.series||{})[prod.id] || {};
+  const out = [];
+  for(const provId of Object.keys(raw)){
+    const pts = daily(raw[provId], days);
+    if(pts.length) out.push({provId, pts, all:daily(raw[provId],null)});
+  }
+  return out;
+}
+
+function best(prod){
+  const series = seriesFor(prod, null);
+  let b = null;
+  for(const s of series){
+    const last = s.pts[s.pts.length-1];
+    if(!b || last[1] < b.price) b = {price:last[1], provId:s.provId, date:last[0]};
+  }
+  return b;
+}
+
+function reference(prod, provId){
+  const pts = seriesFor(prod, 30).find(s=>s.provId===provId);
+  if(!pts || pts.pts.length < 2) return null;
+  const vals = pts.pts.slice(0,-1).map(p=>p[1]).sort((a,b)=>a-b);
+  return vals.length ? vals[Math.floor(vals.length/2)] : null;
+}
+
+/* ---------- gráficas ---------- */
+function path(pts, x, y){
+  return pts.map((p,i)=>(i?"L":"M") + x(i).toFixed(1) + " " + y(p[1]).toFixed(1)).join(" ");
+}
+
+function sparkline(prod){
+  const series = seriesFor(prod, 90);
+  if(!series.length) return "";
+  const W=320, H=34;
+  const all = series.flatMap(s=>s.pts.map(p=>p[1]));
+  const lo=Math.min(...all), hi=Math.max(...all), span=(hi-lo)||1;
+  const n = Math.max(...series.map(s=>s.pts.length));
+  const x = i => n<2 ? W : (i/(n-1))*W;
+  const y = v => H-3 - ((v-lo)/span)*(H-8);
+  const lines = series.map(s=>{
+    const off = n - s.pts.length;
+    const d = s.pts.map((p,i)=>((i?"L":"M") + x(i+off).toFixed(1) + " " + y(p[1]).toFixed(1))).join(" ");
+    return `<path d="${d}" fill="none" stroke="${provColor(s.provId)}" stroke-width="1.6"
+             stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".85"/>`;
+  }).join("");
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${lines}</svg>`;
+}
+
+function chart(prod){
+  const series = seriesFor(prod, state.range || null);
+  const W=340, H=190, L=6, R=44, T=12, B=22;
+  if(!series.length) return `<svg class="chart" viewBox="0 0 ${W} ${H}"><text x="${W/2}" y="${H/2}"
+      fill="#5D6A88" font-size="12" text-anchor="middle">Sin datos en este periodo</text></svg>`;
+
+  const dates = [...new Set(series.flatMap(s=>s.pts.map(p=>p[0])))].sort();
+  const idx = new Map(dates.map((d,i)=>[d,i]));
+  const vals = series.flatMap(s=>s.pts.map(p=>p[1]));
+  let lo=Math.min(...vals), hi=Math.max(...vals);
+  if(prod.target && prod.target < lo) lo = prod.target;
+  if(prod.pvp && prod.pvp > hi) hi = prod.pvp;
+  const pad=(hi-lo)*.08 || 6; lo-=pad; hi+=pad;
+  const x = i => L + (dates.length<2 ? (W-L-R)/2 : (i/(dates.length-1))*(W-L-R));
+  const y = v => T + (1-(v-lo)/(hi-lo))*(H-T-B);
+
+  let g = "";
+  for(const v of [hi-pad, (hi+lo)/2, lo+pad]){
+    g += `<line x1="${L}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="#253352" stroke-width="1"/>
+          <text x="${W-R+6}" y="${(y(v)+4).toFixed(1)}" fill="#5D6A88" font-size="10.5">${short(v)}</text>`;
+  }
+  if(prod.pvp && prod.pvp<=hi && prod.pvp>=lo)
+    g += `<line x1="${L}" x2="${W-R}" y1="${y(prod.pvp).toFixed(1)}" y2="${y(prod.pvp).toFixed(1)}"
+           stroke="#5D6A88" stroke-width="1" stroke-dasharray="1 4"/>`;
+  if(prod.target && prod.target<=hi && prod.target>=lo)
+    g += `<line x1="${L}" x2="${W-R}" y1="${y(prod.target).toFixed(1)}" y2="${y(prod.target).toFixed(1)}"
+           stroke="#EFC069" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <text x="${W-R+6}" y="${(y(prod.target)+4).toFixed(1)}" fill="#EFC069" font-size="10.5">meta</text>`;
+
+  const lines = series.map(s=>{
+    const d = s.pts.map((p,i)=>((i?"L":"M")+x(idx.get(p[0])).toFixed(1)+" "+y(p[1]).toFixed(1))).join(" ");
+    const last = s.pts[s.pts.length-1];
+    return `<path d="${d}" fill="none" stroke="${provColor(s.provId)}" stroke-width="2"
+              stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+            <circle cx="${x(idx.get(last[0])).toFixed(1)}" cy="${y(last[1]).toFixed(1)}" r="2.8"
+              fill="${provColor(s.provId)}"/>`;
+  }).join("");
+
+  const ticks = [dates[0], dates[dates.length-1]].map((d,i)=>{
+    const [Y,M,D] = d.split("-");
+    return `<text x="${i? W-R : L}" y="${H-6}" fill="#5D6A88" font-size="10.5"
+             text-anchor="${i?'end':'start'}">${D}/${M}</text>`;
+  }).join("");
+
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" data-prod="${prod.id}"
+            data-dates="${dates.join(',')}" data-geom="${L},${R},${W}">
+      ${g}${lines}${ticks}
+      <line class="guide" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="#E9EDF7" stroke-width="1" opacity="0"/>
+    </svg>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  const app = document.getElementById("app");
+  const hasData = Object.values(state.data.series||{}).some(p=>Object.keys(p).length);
+
+  if(!hasData){
+    app.innerHTML = `<div class="empty">
+      <h2>Todavía no hay precios</h2>
+      <p>El histórico lo escribe la acción <code>Track prices</code> de GitHub. Lánzala a mano una vez
+      (pestaña Actions → Run workflow) y a partir de ahí corre sola dos veces al día.</p>
+      <button class="link" id="demo">Ver con datos de ejemplo</button>
+    </div>`;
+    document.getElementById("demo").onclick = ()=>{ state.data = demoData(); state.demo=true; render(); };
+    stampHeader();
+    return;
+  }
+
+  app.innerHTML = state.cfg.products.map(prod=>{
+    const b = best(prod);
+    const open = state.open === prod.id;
+    let pill = `<span class="pill f">sin dato</span>`;
+    if(b){
+      const ref = reference(prod, b.provId);
+      if(ref){
+        const d = (b.price-ref)/ref*100;
+        pill = `<span class="pill ${d<=-0.5?'d':d>=0.5?'u':'f'}">${d>0?"+":""}${d.toFixed(1)}% en 30 d</span>`;
+      } else pill = `<span class="pill f">nuevo</span>`;
+    }
+    return `<button class="row" data-id="${prod.id}" aria-expanded="${open}">
+        <div class="top">
+          <div class="who">
+            <div class="name">${prod.name}</div>
+            <div class="note">${prod.note||""}</div>
+            <div class="shop">${b ? "Más barato en " + (state.cfg.providers[b.provId]?.name||b.provId) : "esperando primer registro"}</div>
+          </div>
+          <div class="price-side">
+            <span class="price num">${b?eur(b.price):"—"}</span>
+            ${pill}
+          </div>
+        </div>
+        ${sparkline(prod)}
+      </button>
+      ${open ? detail(prod) : ""}`;
+  }).join("");
+
+  app.querySelectorAll(".row").forEach(r=>r.onclick=()=>{
+    state.open = state.open === r.dataset.id ? null : r.dataset.id;
+    localStorage.setItem("open", state.open||"");
+    render();
+  });
+  app.querySelectorAll(".ranges button").forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    state.range = +b.dataset.d; localStorage.setItem("range", state.range); render();
+  });
+  wireChart();
+  stampHeader();
+}
+
+function detail(prod){
+  const series = seriesFor(prod, null);
+  const rows = Object.entries(prod.urls||{}).map(([provId, url])=>{
+    const s = series.find(x=>x.provId===provId);
+    const last = s ? s.pts[s.pts.length-1] : null;
+    const lo = s ? Math.min(...s.all.map(p=>p[1])) : null;
+    const st = (state.data.status||{})[`${prod.id}|${provId}`] || {};
+    const roto = st.fails >= 3;
+    return `<div class="prov">
+        <span class="dot" style="background:${provColor(provId)}"></span>
+        <a href="${url}" target="_blank" rel="noopener">${state.cfg.providers[provId]?.name||provId}</a>
+        <span class="v num ${roto?'broken':''}">${last?eur(last[1]):(roto?"falla":"—")}</span>
+        <span class="lo num">${lo?"mín "+eur(lo):""}</span>
+      </div>`;
+  }).join("");
+
+  const todos = series.flatMap(s=>s.all.map(p=>p[1]));
+  const mn = todos.length?Math.min(...todos):null, mx = todos.length?Math.max(...todos):null;
+
+  return `<div class="detail">
+    <div class="ranges">
+      ${[7,30,90,0].map(d=>`<button data-d="${d}" aria-pressed="${state.range===d}">${d?d+" d":"Todo"}</button>`).join("")}
+    </div>
+    ${chart(prod)}
+    <div class="readout" id="ro-${prod.id}"><span></span></div>
+    <div class="legend">${rows}</div>
+    <div class="meta">
+      <span><b>PVP</b> ${eur(prod.pvp)}</span>
+      <span><b>Objetivo</b> ${eur(prod.target)}</span>
+      ${mn?`<span><b>Mínimo visto</b> ${eur(mn)}</span>`:""}
+      ${mx?`<span><b>Máximo</b> ${eur(mx)}</span>`:""}
+    </div>
+  </div>`;
+}
+
+function wireChart(){
+  const svg = document.querySelector(".chart[data-dates]");
+  if(!svg) return;
+  const dates = svg.dataset.dates.split(",");
+  const [L,R,W] = svg.dataset.geom.split(",").map(Number);
+  const prod = state.cfg.products.find(p=>p.id===svg.dataset.prod);
+  const ro = document.getElementById("ro-"+prod.id);
+  const guide = svg.querySelector(".guide");
+  const series = seriesFor(prod, state.range || null);
+
+  const move = ev=>{
+    ev.preventDefault();
+    const box = svg.getBoundingClientRect();
+    const px = ((ev.touches?ev.touches[0].clientX:ev.clientX) - box.left) / box.width * W;
+    const t = Math.max(0, Math.min(1, (px-L)/(W-L-R)));
+    const i = Math.round(t*(dates.length-1));
+    const d = dates[i];
+    guide.setAttribute("x1", L + t*(W-L-R)); guide.setAttribute("x2", L + t*(W-L-R));
+    guide.setAttribute("opacity", ".35");
+    const vals = series.map(s=>{
+      const hit = s.pts.find(p=>p[0]===d);
+      return hit ? `<span style="color:${provColor(s.provId)}">${eur(hit[1])}</span>` : null;
+    }).filter(Boolean).join(" · ");
+    const [Y,M,D] = d.split("-");
+    ro.innerHTML = `<span>${D}/${M}/${Y}</span><span class="num">${vals||"sin registro"}</span>`;
+  };
+  const clear = ()=>{ guide.setAttribute("opacity","0"); ro.innerHTML="<span></span>"; };
+  svg.addEventListener("touchstart", move, {passive:false});
+  svg.addEventListener("touchmove", move, {passive:false});
+  svg.addEventListener("touchend", clear);
+  svg.addEventListener("mousemove", move);
+  svg.addEventListener("mouseleave", clear);
+}
+
+function stampHeader(){
+  const u = state.data.updated;
+  document.getElementById("stamp").textContent = state.demo ? "ejemplo"
+    : u ? new Date(u).toLocaleString("es-ES",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}) : "";
+  const days = Math.ceil((new Date(state.cfg.gta6_date) - new Date())/864e5);
+  document.getElementById("countdown").innerHTML = days > 0
+    ? `GTA 6 sale en <b>${days} días</b> · el Black Friday cae una semana después`
+    : `GTA 6 ya está fuera`;
+  document.getElementById("foot").innerHTML =
+    `Bajadas de más del 10 %, mínimos históricos y precio objetivo llegan por Telegram.
+     Para cambiar objetivos o tiendas, edita
+     <a href="https://github.com/${state.cfg.repo}/edit/main/config.json" target="_blank" rel="noopener">config.json</a>.`;
+}
+
+/* datos sintéticos solo para ver la interfaz antes del primer registro real */
+function demoData(){
+  const series = {}, hoy = Date.now();
+  for(const p of FALLBACK_CONFIG.products){
+    series[p.id] = {};
+    ["amazon","mediamarkt","pccomponentes"].forEach((prov,k)=>{
+      const pts = []; let v = p.pvp * (0.93 - k*0.015);
+      for(let d=60; d>=0; d--){
+        v = Math.max(p.pvp*0.72, v + (Math.random()-0.52) * p.pvp*0.012);
+        const dip = (d===18||d===17) ? p.pvp*0.1 : 0;
+        pts.push([new Date(hoy - d*864e5).toISOString().slice(0,16).replace("T"," "), +(v-dip).toFixed(2)]);
+      }
+      series[p.id][prov] = pts;
+    });
+  }
+  return {updated:new Date().toISOString(), series, status:{}};
+}
+
+(async function init(){
+  state.cfg = await grab("config.json", FALLBACK_CONFIG);
+  state.data = await grab("data/prices.json", {updated:null, series:{}, status:{}});
+  render();
+  navigator.serviceWorker?.register("sw.js").catch(()=>{});
+})();
+</script>
+</body>
+</html>

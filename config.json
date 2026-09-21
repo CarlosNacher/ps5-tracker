@@ -1,0 +1,111 @@
+{
+  "title": "PS5 Watch",
+  "currency": "EUR",
+  "gta6_date": "2026-11-19",
+  "repo": "TU-USUARIO/ps5-tracker",
+  "alerts": {
+    "drop_pct": 10,
+    "rise_pct": 10,
+    "median_window_days": 30,
+    "cooldown_days": 3,
+    "renotify_move_pct": 2,
+    "notify_all_time_low": true,
+    "notify_target": true,
+    "fail_streak_warning": 6
+  },
+  "providers": {
+    "amazon": {
+      "name": "Amazon.es",
+      "strategies": ["css", "jsonld", "regex"],
+      "css": [".a-price .a-offscreen", "#corePrice_feature_div .a-offscreen"],
+      "fragile": true
+    },
+    "mediamarkt": {
+      "name": "MediaMarkt",
+      "strategies": ["jsonld", "meta", "css", "regex"],
+      "css": ["[data-test='branded-price-whole-value']", "[data-test='mms-product-price']"]
+    },
+    "pccomponentes": {
+      "name": "PcComponentes",
+      "strategies": ["jsonld", "meta", "css", "regex"],
+      "css": ["#pdp-price-current-integer", "[data-e2e='price-container']"]
+    },
+    "fnac": {
+      "name": "Fnac",
+      "strategies": ["jsonld", "meta", "css", "regex"],
+      "css": [".userPrice", ".f-priceBox-price"]
+    },
+    "game": {
+      "name": "GAME",
+      "strategies": ["jsonld", "meta", "css", "regex"],
+      "css": [".buy-block__price", ".product-price"]
+    },
+    "elcorteingles": {
+      "name": "El Corte Inglés",
+      "strategies": ["jsonld", "meta", "css", "regex"],
+      "css": ["[data-synth='PRICE_CONTAINER-PRICE']", ".prices-price"]
+    }
+  },
+  "products": [
+    {
+      "id": "ps5-digital",
+      "name": "PS5 Slim Digital",
+      "note": "825 GB, sin lector",
+      "pvp": 599.99,
+      "target": 499,
+      "urls": {
+        "amazon": "https://www.amazon.es/dp/B0CL61F39H",
+        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-digital-slim-1428279.html",
+        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-slim-digital-1tb",
+        "fnac": "https://www.fnac.es/Consola-Sony-PS5-Slim-Digital/a9012345",
+        "game": "https://www.game.es/consola/consola-playstation-5-digital-slim",
+        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A48123456-consola-ps5-digital-slim/"
+      }
+    },
+    {
+      "id": "ps5-lector",
+      "name": "PS5 Slim con lector",
+      "note": "1 TB, Blu-ray 4K",
+      "pvp": 649.99,
+      "target": 549,
+      "urls": {
+        "amazon": "https://www.amazon.es/dp/B0CL5KNB9M",
+        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-slim-1428278.html",
+        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-slim-1tb",
+        "fnac": "https://www.fnac.es/Consola-Sony-PS5-Slim/a9012346",
+        "game": "https://www.game.es/consola/consola-playstation-5-slim",
+        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A48123457-consola-ps5-slim/"
+      }
+    },
+    {
+      "id": "ps5-pro",
+      "name": "PS5 Pro",
+      "note": "2 TB, lector aparte (+119,99 €)",
+      "pvp": 899.99,
+      "target": 749,
+      "urls": {
+        "amazon": "https://www.amazon.es/dp/B0DGY63Z2N",
+        "mediamarkt": "https://www.mediamarkt.es/es/product/_consola-sony-ps5-pro-1673558.html",
+        "pccomponentes": "https://www.pccomponentes.com/sony-playstation-5-pro-2tb",
+        "fnac": "https://www.fnac.es/Consola-Sony-PS5-Pro/a9012347",
+        "game": "https://www.game.es/consola/consola-playstation-5-pro",
+        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A48123458-consola-ps5-pro/"
+      }
+    },
+    {
+      "id": "dualsense",
+      "name": "Mando DualSense",
+      "note": "Oficial Sony, blanco",
+      "pvp": 79.99,
+      "target": 55,
+      "urls": {
+        "amazon": "https://www.amazon.es/dp/B08H99BPJN",
+        "mediamarkt": "https://www.mediamarkt.es/es/product/_mando-sony-dualsense-1382258.html",
+        "pccomponentes": "https://www.pccomponentes.com/sony-dualsense-mando-inalambrico-ps5-blanco",
+        "fnac": "https://www.fnac.es/Mando-inalambrico-DualSense-Sony-Negro-PS5/a8388323",
+        "game": "https://www.game.es/accesorios/mando-dualsense-ps5",
+        "elcorteingles": "https://www.elcorteingles.es/videojuegos/A37123456-mando-dualsense-ps5/"
+      }
+    }
+  ]
+}
