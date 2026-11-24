@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T04:17+01:00",
+ "updated": "2026-11-24T16:45+01:00",
  "series": {
   "ps5-digital": {
    "game": [
@@ -1238,6 +1238,10 @@
     [
      "2026-11-24 04:17",
      799.99
+    ],
+    [
+     "2026-11-24 16:45",
+     799.99
     ]
    ],
    "fnac": [
@@ -1262,80 +1266,80 @@
  },
  "status": {
   "ps5-digital|mediamarkt": {
-   "fails": 128,
+   "fails": 129,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-digital|pccomponentes": {
-   "fails": 128,
+   "fails": 129,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-digital|game": {
-   "fails": 41,
+   "fails": 42,
    "last_ok": "2026-11-03 00:51",
    "last_error": "HTTP 404",
    "method": "jsonld",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-digital|fnac": {
-   "fails": 64,
+   "fails": 65,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17",
+   "last_try": "2026-11-24 16:45",
    "last_ok": "2026-10-22 12:05",
    "method": "jsonld"
   },
   "ps5-lector|mediamarkt": {
-   "fails": 128,
+   "fails": 129,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-lector|pccomponentes": {
-   "fails": 128,
+   "fails": 129,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-lector|game": {
-   "fails": 41,
+   "fails": 42,
    "last_ok": "2026-11-03 00:51",
    "last_error": "HTTP 404",
    "method": "jsonld",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-lector|fnac": {
-   "fails": 39,
+   "fails": 40,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17",
+   "last_try": "2026-11-24 16:45",
    "last_ok": "2026-11-03 23:16",
    "method": "jsonld"
   },
   "ps5-pro|pccomponentes": {
-   "fails": 128,
+   "fails": 129,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "ps5-pro|game": {
    "fails": 0,
-   "last_ok": "2026-11-24 04:17",
+   "last_ok": "2026-11-24 16:45",
    "last_error": null,
    "method": "jsonld"
   },
   "ps5-pro|fnac": {
-   "fails": 36,
+   "fails": 37,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17",
+   "last_try": "2026-11-24 16:45",
    "last_ok": "2026-11-05 14:06",
    "method": "jsonld"
   },
   "dualsense|pccomponentes": {
-   "fails": 128,
+   "fails": 129,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17"
+   "last_try": "2026-11-24 16:45"
   },
   "dualsense|fnac": {
-   "fails": 65,
+   "fails": 66,
    "last_error": "HTTP 403 (bloqueo)",
-   "last_try": "2026-11-24 04:17",
+   "last_try": "2026-11-24 16:45",
    "last_ok": "2026-10-21 22:35",
    "method": "jsonld"
   }
